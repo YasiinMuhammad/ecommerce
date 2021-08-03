@@ -1,0 +1,11 @@
+.orderNameText .MuiTypography-body1 {
+    font-size: 0.7rem;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 600;
+    line-height: 1.5;
+    letter-spacing: 0.00938em;
+}
+.orderIdText .MuiTypography-colorTextSecondary {
+    font-size: 12px !important;
+    color: rgba(43, 43, 42, 0.54);
+}
