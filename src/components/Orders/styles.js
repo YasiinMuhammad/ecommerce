@@ -26,6 +26,8 @@ export default makeStyles((theme) => ({
   },
   orderBox:{
     height: "200px"
-  }
+  }, title: {
+    margin: "5%",
+  },
 
 }));

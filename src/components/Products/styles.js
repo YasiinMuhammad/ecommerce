@@ -18,10 +18,12 @@ export default makeStyles((theme) => ({
     margin: "10px",
     maxHeight: "425px",
     alignContent: "center",
+
   },
   carouselImage: {
-    maxHeight: "225px",
-    width: "1500px",
+    maxHeight: "100%",
+    maxWidth: "100%",
+    height: "auto",
     objectFit: "contain",
   },
   carouselContainer: {
@@ -29,5 +31,6 @@ export default makeStyles((theme) => ({
   },
   searchButton: {
     width: "225px",
+    margin: "10px"
   },
 }));

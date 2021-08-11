@@ -63,7 +63,7 @@ const Cart = ({
 
   return (
     <Container>
-      <div className={classes.toolbar}>
+      <div className={classes.toolbar}>÷
         <Typography className={classes.title} variant="h3" gutterBottom>
           Shopping Cart
         </Typography>

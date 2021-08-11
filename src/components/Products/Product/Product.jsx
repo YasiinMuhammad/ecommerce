@@ -23,7 +23,7 @@ const Product = ({ product, onAddToCart }) => {
         />
         <CardContent>
           <div className={classes.cardContent}>
-            <Typography variant="h5" component="h2">
+            <Typography  component="h2">
               {product.name}
             </Typography>
             <Typography variant="h5" component="h2">

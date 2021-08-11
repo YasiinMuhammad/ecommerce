@@ -23,9 +23,11 @@ export default makeStyles((theme) => ({
     fontFamily: "Courier",
     color: "gray",
     marginRight: '25px',
+    textDecoration: "none"
   },
   image: {
-    marginRight: "10px",
+    margin: "10px",
+    alignContent: "baseline"
   },
   menuButton: {
     marginRight: theme.spacing(2),

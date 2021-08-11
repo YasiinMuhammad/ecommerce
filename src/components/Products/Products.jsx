@@ -1,33 +1,60 @@
-import React from "react";
-import { Grid, TextField, Button, Container } from "@material-ui/core";
+import { Button, Container, Divider, Grid } from "@material-ui/core";
+import React, { useState } from "react";
+import Carousel from "react-material-ui-carousel";
 import Product from "./Product/Product";
 import useStyles from "./styles";
-import { useState } from "react";
-import Carousel from "react-material-ui-carousel";
+import headerImage1 from "../../assets/headerImage1.jpg";
+import headerImage2 from "../../assets/headerImage2.jpg";
+import headerImage3 from "../../assets/headerImage3.jpg";
+import headerImage4 from "../../assets/headerImage4.jpg";
 
-const Products = ({ products, onAddToCart }) => {
+const Products = ({ categories, onAddToCart }) => {
   const classes = useStyles();
-  const [productSearch, setProductSearch] = useState("");
+  const [selectedProducts, setSelcetedProducts] = useState("Featured Products");
+
+  function getProducts(selectedProducts) {
+    if (selectedProducts === selectedProducts) {
+      return (
+        <>
+          {categories.map((category) => {
+            return (
+              <>
+                {category.productsData.map((product) => {
+                  if (category.name === selectedProducts) {
+                    return (
+                      <>
+                        <Grid key={product.id} item xs={8} sm={6} md={4} lg={3}>
+                          <Product
+                            product={product}
+                            onAddToCart={onAddToCart}
+                          />
+                        </Grid>
+                      </>
+                    );
+                  }
+                })}
+              </>
+            );
+          })}
+        </>
+      );
+    }
+  }
 
   var items = [
     {
-      url: "https://m.media-amazon.com/images/G/01/AMAZON_FASHION/2021/SITE_FLIPS/SPR_1/SND/desktop/Deals_Header_DT._CB656338822_.jpg",
+      image: headerImage1,
     },
     {
-      url: "https://m.media-amazon.com/images/G/01/AMAZON_FASHION/2021/CVP_SUM/BROWSE-HEADER/DT_BROWSE_Feature-Card_CML_GENERIC_2._CB1198675309_.jpg",
+      image: headerImage2,
     },
     {
-      url: "https://images-na.ssl-images-amazon.com/images/G/01/AMAZON_FASHION/2021/CVP_SUM/BROWSE-HEADER/DT_BROWSE_Feature-Card_CML_Home-Kitchen_2.jpg",
+      image: headerImage3,
     },
     {
-      url: "https://m.media-amazon.com/images/G/01/AMAZON_FASHION/2021/CVP_SUM/BROWSE-HEADER/DT_BROWSE_Feature-Card_CML_Active_W_1.jpg",
+      image: headerImage4,
     },
   ];
-
-  // products.map((item) => {
-  //   console.log(item.media.source);
-  //   return item.media.source;
-  // });
 
   return (
     <main className={classes.content}>
@@ -43,91 +70,95 @@ const Products = ({ products, onAddToCart }) => {
             }}
           >
             {items.map((item, i) => (
-              <img alt="" key={i} src={item.url} className={classes.carouselImage} />
+              <img
+                alt=""
+                key={item}
+                src={item.image}
+                className={classes.carouselImage}
+              />
             ))}
           </Carousel>
         </Container>
       </Grid>
-      <Container>
-        <Grid
-          container
-          direction="row"
-          justify="center"
-        
-        >
-          <Grid item xs>
-            <Button className={classes.searchButton} variant="outlined">
+      <Container alignItems="center" justify="center">
+        <Grid container alignItems="center" justify="center">
+          <Grid item>
+            <Button
+              type="button"
+              className={classes.searchButton}
+              variant="outlined"
+              onClick={(e) => {
+                setSelcetedProducts("Kitchen");
+              }}
+            >
               KITCHEN
             </Button>
           </Grid>
-          <Grid item xs>
-            <Button className={classes.searchButton} variant="outlined">
-              BED
+          <Grid item>
+            <Button
+              type="button"
+              className={classes.searchButton}
+              variant="outlined"
+              onClick={(e) => {
+                setSelcetedProducts("Clothing");
+              }}
+            >
+              Clothing
             </Button>
           </Grid>
-          <Grid item xs>
-            <Button className={classes.searchButton} variant="outlined">
-              BATH
+          <Grid item>
+            <Button
+              type="button"
+              className={classes.searchButton}
+              variant="outlined"
+              onClick={(e) => {
+                setSelcetedProducts("Electronics");
+              }}
+            >
+              Electronics
             </Button>
           </Grid>
-          <Grid item xs>
-            <Button className={classes.searchButton} variant="outlined">
+          <Grid item>
+            <Button
+              type="button"
+              className={classes.searchButton}
+              variant="outlined"
+              onClick={(e) => {
+                setSelcetedProducts("Furniture");
+              }}
+            >
               FURNITURE
             </Button>
           </Grid>
-          <Grid item xs>
-            <Button className={classes.searchButton} variant="outlined">
-              HOME DECOR
+          <Grid item>
+            <Button
+              type="button"
+              className={classes.searchButton}
+              variant="outlined"
+              onClick={(e) => {
+                setSelcetedProducts("Bath");
+              }}
+            >
+              Bath
             </Button>
           </Grid>
         </Grid>
       </Container>
+      <Container>
+        <br />
+        <Divider />
+        <br />
 
-      <Grid
-        xs={12}
-        container
-        direction="row"
-        justify="center"
-        alignItems="center"
-      >
-        <form className={classes.searchBar} noValidate autoComplete="off">
-          <TextField
-            className={classes.textField}
-            id="outlined-full-width"
-            style={{ margin: 8 }}
-            placeholder="Search"
-            fullWidth
-            margin="normal"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            variant="outlined"
-            datalist="#products"
-            onChange={(e) => {
-              setProductSearch(e.target.value);
-            }}
-          />
-        </form>
-      </Grid>
-      <br />
-
-      <Grid container justify="center" spacing={4}>
-        {products
-          .filter((value) => {
-            if (productSearch === "") {
-              return value;
-            } else if (
-              value.name.toLowerCase().includes(productSearch.toLowerCase())
-            ) {
-              return value.name;
-            }
-          })
-          .map((product) => (
-            <Grid key={product.id} item xs={12} sm={6} md={4} lg={3}>
-              <Product product={product} onAddToCart={onAddToCart} />
-            </Grid>
-          ))}
-      </Grid>
+        <Grid
+          container
+          spacing={3}
+          direction="row"
+          justify="center"
+        >
+        
+          {getProducts(selectedProducts)}
+        </Grid>
+      </Container>
     </main>
   );
 };

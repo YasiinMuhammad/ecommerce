@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   AppBar,
   Toolbar,
@@ -6,18 +6,30 @@ import {
   Badge,
   Tooltip,
   Typography,
+  Menu,
+  MenuItem,
+  Button,
 } from "@material-ui/core";
 import { ShoppingCart } from "@material-ui/icons";
 import logo from "../../assets/little-bird.svg";
 import useStyles from "./styles";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-
+import MenuIcon from "@material-ui/icons/Menu";
 
 const Navbar = ({ totalItems }) => {
   const classes = useStyles();
   const location = useLocation();
   const { currentUser } = useAuth();
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <>
@@ -36,8 +48,8 @@ const Navbar = ({ totalItems }) => {
               height="25px"
               className={classes.image}
             />
-            little Birdie
           </Typography>
+
           <div className={classes.grow} />
           {!currentUser ? (
             <>
@@ -52,7 +64,6 @@ const Navbar = ({ totalItems }) => {
                 <div className={classes.button}>
                   <Tooltip title="Sign in to access cart!">
                     <IconButton
-                      
                       component={Link}
                       aria-label="Show cart items"
                       color="inherit"
@@ -74,27 +85,48 @@ const Navbar = ({ totalItems }) => {
               >
                 Hello, {currentUser.email}
               </Typography>
-              <Typography
-                component={Link}
-                to="/orders"
-                className={classes.logIn}
+              <IconButton
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                onClick={handleClick}
               >
-                Orders
-              </Typography>
-              
-                <div className={classes.button}>
-                  <IconButton
-                    to="/cart"
-                    component={Link}
-                    aria-label="Show cart items"
-                    color="inherit"
-                  >
-                    <Badge badgeContent={totalItems} color="secondary">
-                      <ShoppingCart />
-                    </Badge>
-                  </IconButton>
-                </div>
-         
+                <MenuIcon />
+              </IconButton>
+              <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <img
+                  src={logo}
+                  alt="Bird logo"
+                  height="55px"
+                  className={classes.image}
+                />
+
+                <MenuItem onClick={handleClose} to="/orders" component={Link}>
+                  <Typography className={classes.logIn}>My Orders</Typography>
+                </MenuItem>
+
+                <MenuItem onClick={handleClose} component={Link} to="/logout">
+                  <Typography className={classes.logIn}> Logout</Typography>
+                </MenuItem>
+              </Menu>
+
+              <div className={classes.button}>
+                <IconButton
+                  to="/cart"
+                  component={Link}
+                  aria-label="Show cart items"
+                  color="inherit"
+                >
+                  <Badge badgeContent={totalItems} color="secondary">
+                    <ShoppingCart />
+                  </Badge>
+                </IconButton>
+              </div>
             </>
           )}
         </Toolbar>

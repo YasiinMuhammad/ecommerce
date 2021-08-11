@@ -5,8 +5,12 @@ export default makeStyles(() => ({
     maxWidth: "100%",
   },
   media: {
-    height: 0,
-    paddingTop: "56.25%", // 16:9
+    paddingTop: "100%",
+
+    maxWidth: "100%",
+    maxHeight: "100%",
+    display: "block",
+    backgroundSize: "contain",
   },
   cardActions: {
     display: "flex",
@@ -15,5 +19,9 @@ export default makeStyles(() => ({
   cardContent: {
     display: "flex",
     justifyContent: "space-between",
+  },
+  MuiCardMedia: {},
+  typography: {
+    fontSize: 12,
   },
 }));

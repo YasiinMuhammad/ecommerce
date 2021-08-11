@@ -7,18 +7,19 @@ import {
   ButtonBase,
   Box,
   Button,
+  Icon,
 } from "@material-ui/core";
-import { AddShoppingCart } from "@material-ui/icons";
+import { AddShoppingCart, ClearTwoTone } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
 import useStyles from "./styles";
 import "./style.css";
 import { useAuth } from "../../contexts/AuthContext";
 import { db } from "../../firebase";
+import { Link } from "react-router-dom";
 
 const Orders = ({ onAddToCart }) => {
   const classes = useStyles();
   const [orders, setOrders] = useState([]);
-
   const { currentUser } = useAuth();
 
   useEffect(() => {
@@ -36,8 +37,8 @@ const Orders = ({ onAddToCart }) => {
     }
   }, [currentUser]);
 
-  const deleteOrder = (deleteOrder) => {
-    console.log(deleteOrder);
+  const deleteOrder = (deleteOrder, checkoutId) => {
+    console.log(checkoutId);
     if (orders) {
       const docRef = db
         .collection("users")
@@ -49,21 +50,26 @@ const Orders = ({ onAddToCart }) => {
         .then((snapshot) => {
           if (snapshot.docs.length > 0) {
             snapshot.forEach((doc) => {
-              console.log(doc.id, "=>", doc.data());
+              // console.log(doc.id, "=>", doc.data());
               // doc is a DocumentSnapshot with actual data
               // const data = doc.data();÷
               const results = doc
                 .data()
-                .billingDetails.filter((order) => order.id !== deleteOrder);
+                .billingDetails.filter(
+                  (order) =>
+                    order.id !== deleteOrder || doc.data().id !== checkoutId
+                );
               // const deleteDoc =  db.collection("users")
               // .doc(currentUser?.uid).collection('products').doc(doc.id).delete()
               // console.log(deleteDoc);
 
               db.collection("users")
                 .doc(currentUser?.uid)
-                .collection("products").doc(doc.id).update({
-                  billingDetails: results
-                })
+                .collection("products")
+                .doc(doc.id)
+                .update({
+                  billingDetails: results,
+                });
             });
           }
         })
@@ -86,13 +92,14 @@ const Orders = ({ onAddToCart }) => {
         checkoutTotal: order.total,
         date: order.date,
         productId: items.product_id,
+        checkoutId: order.id,
       }));
-     
+
       return (
         <>
           <div className={classes.root}>
             {billingOrders.map((order) => (
-              <Paper key={ order}className={classes.paper} style={{ margin: "25px" }}>
+              <Paper className={classes.paper} style={{ margin: "25px" }}>
                 <Grid className={classes.root}>
                   <Grid
                     container
@@ -100,13 +107,22 @@ const Orders = ({ onAddToCart }) => {
                     justify="space-between"
                     alignItems="flex-start"
                   >
-                    <Grid item lg={6}>
+                    <Grid item xs={6}>
                       <Box>
                         <Typography key={order.name}>{order.name} </Typography>
                       </Box>
                     </Grid>
-                    <Grid item lg={5}>
-                      <Box>
+                    <Grid item xs={5}>
+                      <Box item textAlign="right">
+                        <Grid item textAlign="right">
+                          <Icon
+                            onClick={() =>
+                              deleteOrder(order.id, order.checkoutId)
+                            }
+                          >
+                            <ClearTwoTone />
+                          </Icon>
+                        </Grid>
                         <Grid item>
                           <ListItemText
                             className="orderIdText"
@@ -123,7 +139,7 @@ const Orders = ({ onAddToCart }) => {
                       <Grid item>
                         <ButtonBase className={classes.image}>
                           <img
-                          alt="Product"
+                            alt="Product"
                             key={order.media}
                             src={order.media}
                             className={classes.img}
@@ -165,15 +181,6 @@ const Orders = ({ onAddToCart }) => {
                               >
                                 Buy it Again
                               </Button>
-                              <Button
-                                className={classes.buyAgainBtn}
-                                variant="outlined"
-                                aria-label="Add to Cart"
-                                onClick={() => deleteOrder(order.id)}
-                                startIcon={<AddShoppingCart />}
-                              >
-                                Remove
-                              </Button>
                             </Grid>
                           </Box>
                         </Box>
@@ -191,6 +198,10 @@ const Orders = ({ onAddToCart }) => {
 
   return (
     <div style={{ marginTop: "125px" }}>
+      <Typography className={classes.title} variant="h3" gutterBottom>
+        Your Orders
+      </Typography>
+
       <Grid
         container
         spacing={0}

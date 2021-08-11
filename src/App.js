@@ -13,14 +13,26 @@ import { commerece } from "./lib/commerce";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 const App = () => {
-  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [cart, setCart] = useState({});
   const [order, setOrder] = useState({});
   const [errorMessage, setErrorMessage] = useState("");
 
   const fetchProducts = async () => {
-    const { data } = await commerece.products.list();
-    setProducts(data);
+    const { data: products } = await commerece.products.list();
+    const { data: categoriesData } = await commerece.categories.list();
+    const productPerCategory = categoriesData.reduce((acc, category) =>{
+      return [
+        ...acc, {
+          ...category,
+          productsData: products.filter((product) =>
+          product.categories.find((cat) => cat.id === category.id)
+          ),
+        },
+      ];
+    }, [ ])
+     
+    setCategories(productPerCategory);
   };
 
   const fetchCart = async () => {
@@ -73,7 +85,7 @@ const App = () => {
           <Navbar totalItems={cart.total_items} />
           <Switch>
             <Route exact path="/">
-              <Products products={products} onAddToCart={handleAddToCart} />
+              <Products categories={categories} onAddToCart={handleAddToCart} />
             </Route>
             <Route exact path="/cart">
               <Cart
@@ -95,7 +107,7 @@ const App = () => {
               <Login />
             </Route>
             <Route exact path="/orders">
-              <Orders  products={products} onAddToCart={handleAddToCart}/>
+              <Orders  categories={categories} onAddToCart={handleAddToCart}/>
             </Route>
             <Route exact path="/logout">
               <Logout  refreshCart={refreshCart}/>
