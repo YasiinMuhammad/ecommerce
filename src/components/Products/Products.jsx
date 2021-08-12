@@ -23,8 +23,9 @@ const Products = ({ categories, onAddToCart }) => {
                   if (category.name === selectedProducts) {
                     return (
                       <>
-                        <Grid key={product.id} item xs={8} sm={6} md={4} lg={3}>
+                        <Grid item xs={8} sm={6} md={4} lg={3}>
                           <Product
+                          key={product.id}
                             product={product}
                             onAddToCart={onAddToCart}
                           />
@@ -71,8 +72,8 @@ const Products = ({ categories, onAddToCart }) => {
           >
             {items.map((item, i) => (
               <img
-                alt=""
-                key={item}
+                alt="banner"
+                key={item.id}
                 src={item.image}
                 className={classes.carouselImage}
               />
@@ -80,8 +81,8 @@ const Products = ({ categories, onAddToCart }) => {
           </Carousel>
         </Container>
       </Grid>
-      <Container alignItems="center" justify="center">
-        <Grid container alignItems="center" justify="center">
+      <Container alignitems="center" justify="center">
+        <Grid container alignitems="center" justify="center">
           <Grid item>
             <Button
               type="button"
@@ -149,13 +150,7 @@ const Products = ({ categories, onAddToCart }) => {
         <Divider />
         <br />
 
-        <Grid
-          container
-          spacing={3}
-          direction="row"
-          justify="center"
-        >
-        
+        <Grid container spacing={3} direction="row" justify="center">
           {getProducts(selectedProducts)}
         </Grid>
       </Container>

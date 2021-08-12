@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import useStyles from "./style";
 import { Link } from "react-router-dom";
 import littleBird from "../../assets/little-bird.svg";
-import { Grid, CssBaseline } from "@material-ui/core";
+import { Grid, CssBaseline, TextField } from "@material-ui/core";
 import { Divider } from "@material-ui/core";
 import { useAuth } from "../../contexts/AuthContext";
 
@@ -11,16 +11,26 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { logIn, registerAccount } = useAuth();
-
+  var emailPattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+  const[error, setError] = useState(false);
   const signIn = (e) => {
     e.preventDefault();
-    logIn(email, password);
+    if (emailPattern.test(email)) {
+      logIn(email, password);
+    } else {
+      setError(true)
+    }
   };
 
   const register = (e) => {
     e.preventDefault();
-    registerAccount(email, password);
+    if (emailPattern.test(email)) {
+      registerAccount(email, password);
+    } else {
+      setError(true)
+    }
   };
+
   return (
     <>
       <CssBaseline />
@@ -30,7 +40,7 @@ function Login() {
           <Grid>
             <Link to="/">
               <img
-              alt="Little Bird logo"
+                alt="Little Bird logo"
                 style={{ objectFit: "contain" }}
                 className={classes.loginLogo}
                 src={littleBird}
@@ -42,19 +52,26 @@ function Login() {
               <form>
                 <h1 className={classes.loginContainerH1}>Sign-in</h1>
                 <h5 className={classes.loginContainerh5}>E-mail</h5>
-                <input
+                <TextField
+                  size="small"
+                  variant="outlined"
                   className={classes.inputBox}
                   type="text"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  error={error}
+                  helperText={ error ? "Please use a valid email" : ""}
                 />
 
                 <h5 className={classes.loginContainerh5}>Password</h5>
-                <input
+                <TextField
+                  size="small"
+                  variant="outlined"
                   className={classes.inputBox}
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                 
                 />
 
                 <button

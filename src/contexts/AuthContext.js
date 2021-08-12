@@ -20,10 +20,10 @@ export function AuthProvider({ children }) {
     return unsubscribe;
   }, []);
 
-  function logIn(email, password) {
+  function logIn(email, password, validate) {
     return auth.signInWithEmailAndPassword(email, password).then((auth) => {
       history.push("/");
-    }).catch((error) => alert(error.message));
+    }).catch((error) => validate(error.message));
   }
 
   function signout() {

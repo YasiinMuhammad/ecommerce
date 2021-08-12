@@ -50,19 +50,12 @@ const Orders = ({ onAddToCart }) => {
         .then((snapshot) => {
           if (snapshot.docs.length > 0) {
             snapshot.forEach((doc) => {
-              // console.log(doc.id, "=>", doc.data());
-              // doc is a DocumentSnapshot with actual data
-              // const data = doc.data();÷
               const results = doc
                 .data()
                 .billingDetails.filter(
                   (order) =>
                     order.id !== deleteOrder || doc.data().id !== checkoutId
                 );
-              // const deleteDoc =  db.collection("users")
-              // .doc(currentUser?.uid).collection('products').doc(doc.id).delete()
-              // console.log(deleteDoc);
-
               db.collection("users")
                 .doc(currentUser?.uid)
                 .collection("products")

@@ -8,6 +8,7 @@ import {
   Login,
   Orders,
   Logout,
+  Footer,
 } from "./components";
 import { commerece } from "./lib/commerce";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -19,8 +20,8 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const fetchProducts = async () => {
-    const { data: products } = await commerece.products.list();
-    const { data: categoriesData } = await commerece.categories.list();
+    const { data: products } = await commerece.products.list({limit: 100});
+    const { data: categoriesData } = await commerece.categories.list({limit:100,});
     const productPerCategory = categoriesData.reduce((acc, category) =>{
       return [
         ...acc, {
@@ -113,6 +114,7 @@ const App = () => {
               <Logout  refreshCart={refreshCart}/>
             </Route>
           </Switch>
+          <Footer />
         </AuthProvider>
       </div>
     </Router>
