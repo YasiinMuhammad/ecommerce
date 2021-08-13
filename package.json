@@ -1,8 +1,8 @@
 {
   "name": "ecommerce",
   "version": "0.1.0",
-  "engines": {
-    "node": "14.x"
+   "engines": {
+    "node":"14.x"
   },
   "private": true,
   "dependencies": {
@@ -30,11 +30,10 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "npm start",
-    "build": "npm build",
-    "test": "npm test",
-    "eject": "npm eject",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix  npm run build"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
