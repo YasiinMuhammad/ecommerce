@@ -33,7 +33,8 @@
     "start": "npm start",
     "build": "npm build",
     "test": "npm test",
-    "eject": "npm eject"
+    "eject": "npm eject",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix app && npm run build --prefix app"
   },
   "eslintConfig": {
     "extends": [
